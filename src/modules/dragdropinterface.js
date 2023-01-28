@@ -1,9 +1,16 @@
-
 const container = document.querySelector('.todo-list');
 let dragged = null;
 let target = null;
 let draggables = null;
-export const draginit = () => {
+
+const updateContainerDetails = () => {
+  draggables = document.querySelectorAll('.todo-list-task');
+  for (let i = 0; i < draggables.length; i += 1) {
+    draggables[i].id = i + 1;
+  }
+};
+
+const draginit = () => {
   draggables = document.querySelectorAll('.todo-list-task');
   draggables.forEach((tasktile) => {
     tasktile.addEventListener('dragstart', (event) => {
@@ -35,11 +42,6 @@ export const draginit = () => {
       updateContainerDetails();
     }
   });
-}
+};
 
-const updateContainerDetails = () => {
-  draggables = document.querySelectorAll('.todo-list-task');
-  for (let i = 0; i < draggables.length; i += 1) {
-    draggables[i].id = i + 1;
-  }
-}
+export default draginit;
