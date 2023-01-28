@@ -1,9 +1,11 @@
+import { removeCompleted, updateTaskStatus } from './checkRemoveTasks.js';
 import { addNewTask, loadTaskList, updateTaskDetails,deleteSelectedTask } from './taskCRUD.js';
+
 
 const taskContainer = document.querySelector('.todo-list');
 const taskInputField = document.querySelector('#todolist-input');
 const enterButton = document.querySelector('#enter-button');
-
+const removeCompleteButton = document.querySelector('#button-clear')
 let editTaskElement = null;
 
 export const initListeners = () => {
@@ -44,6 +46,16 @@ export const initListeners = () => {
       resetEditWindow(editTaskElement);
     }
   };
+
+  taskContainer.onclick=(event)=>{
+    if(event.target.type==='checkbox'){
+      updateTaskStatus(event.target);
+    }
+  }
+
+  removeCompleteButton.onclick = () =>{
+    removeCompleted();
+  }
 
 }
 

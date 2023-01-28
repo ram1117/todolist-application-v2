@@ -1,48 +1,45 @@
-export default class Dragdropui {
-  constructor() {
-    this.dragged = null;
-    this.target = null;
-    this.draggables = document.querySelectorAll('.todo-list-task');
-    this.container = document.querySelector('.todo-list');
-  }
 
-  init() {
-    this.draggables.forEach((tasktile) => {
-      tasktile.addEventListener('dragstart', (event) => {
-        this.dragged = event.target;
-      });
-
-      tasktile.addEventListener('dragover', (event) => {
-        event.preventDefault();
-        const node = event.target.parentNode;
-        if (node.tagName === 'LI' && node.classList.contains('todo-list-task')) {
-          this.target = node;
-        }
-      });
+const container = document.querySelector('.todo-list');
+let dragged = null;
+let target = null;
+let draggables = null;
+export const draginit = () => {
+  draggables = document.querySelectorAll('.todo-list-task');
+  draggables.forEach((tasktile) => {
+    tasktile.addEventListener('dragstart', (event) => {
+      dragged = event.target;
     });
-    this.container.addEventListener('drop', (event) => {
+
+    tasktile.addEventListener('dragover', (event) => {
       event.preventDefault();
-      if (this.target !== null && this.dragged !== null) {
-        const dragId = parseInt(this.dragged.id, 10);
-        const targetId = parseInt(this.target.id, 10);
-        if (dragId < targetId) {
-          this.container.removeChild(this.dragged);
-          this.container.insertBefore(this.dragged, this.target.nextSibling);
-        } else if (dragId === targetId) {
-          this.updateContainerDetails();
-        } else {
-          this.container.removeChild(this.dragged);
-          this.container.insertBefore(this.dragged, this.target);
-        }
-        this.updateContainerDetails();
+      const node = event.target.parentNode;
+      if (node.tagName === 'LI' && node.classList.contains('todo-list-task')) {
+        target = node;
       }
     });
-  }
-
-  updateContainerDetails() {
-    this.draggables = document.querySelectorAll('.todo-list-task');
-    for (let i = 0; i < this.draggables.length; i += 1) {
-      this.draggables[i].id = i + 1;
+  });
+  container.addEventListener('drop', (event) => {
+    event.preventDefault();
+    if (target !== null && dragged !== null) {
+      const dragId = parseInt(dragged.id, 10);
+      const targetId = parseInt(target.id, 10);
+      if (dragId < targetId) {
+        container.removeChild(dragged);
+        container.insertBefore(dragged, target.nextSibling);
+      } else if (dragId === targetId) {
+        updateContainerDetails();
+      } else {
+        container.removeChild(dragged);
+        container.insertBefore(dragged, target);
+      }
+      updateContainerDetails();
     }
+  });
+}
+
+const updateContainerDetails = () => {
+  draggables = document.querySelectorAll('.todo-list-task');
+  for (let i = 0; i < draggables.length; i += 1) {
+    draggables[i].id = i + 1;
   }
 }

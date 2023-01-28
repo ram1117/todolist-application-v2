@@ -38,7 +38,7 @@ export const deleteSelectedTask = (taskElement) => {
   loadTaskList();
 }
 
-const updateTaskIDs = () => {
+export const updateTaskIDs = () => {
   const arr = Storage.getTaskArray();
   for(let i=0;i<arr.length;i+=1){
     arr[i].id = i+1;
