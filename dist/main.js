@@ -136,7 +136,51 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\n\n\n//# sourceURL=webpack://todolist-application-v2/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _modules_taskInterface_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/taskInterface.js */ \"./src/modules/taskInterface.js\");\n\n\n\nwindow.onload=()=>{\n  (0,_modules_taskInterface_js__WEBPACK_IMPORTED_MODULE_1__.initListeners)();\n};\n\n\n//# sourceURL=webpack://todolist-application-v2/./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/modules/storage.js":
+/*!********************************!*\
+  !*** ./src/modules/storage.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Storage)\n/* harmony export */ });\nclass Storage {\n  static getTaskArray() {\n    const array = JSON.parse(localStorage.getItem('task-array'));\n    return array === null ? [] : array;\n  }\n\n  static setTaskArray(arr) {\n    localStorage.setItem('task-array', JSON.stringify(arr));\n  }\n}\n\n//# sourceURL=webpack://todolist-application-v2/./src/modules/storage.js?");
+
+/***/ }),
+
+/***/ "./src/modules/task.js":
+/*!*****************************!*\
+  !*** ./src/modules/task.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Task)\n/* harmony export */ });\nclass Task {\n  constructor(id, details, completed = false) {\n    this.id = id;\n    this.details = details;\n    this.completed = completed;\n  }\n}\n\n//# sourceURL=webpack://todolist-application-v2/./src/modules/task.js?");
+
+/***/ }),
+
+/***/ "./src/modules/taskCRUD.js":
+/*!*********************************!*\
+  !*** ./src/modules/taskCRUD.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"addNewTask\": () => (/* binding */ addNewTask),\n/* harmony export */   \"createTaskTile\": () => (/* binding */ createTaskTile),\n/* harmony export */   \"deleteSelectedTask\": () => (/* binding */ deleteSelectedTask),\n/* harmony export */   \"loadTaskList\": () => (/* binding */ loadTaskList),\n/* harmony export */   \"updateTaskDetails\": () => (/* binding */ updateTaskDetails)\n/* harmony export */ });\n/* harmony import */ var _storage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./storage.js */ \"./src/modules/storage.js\");\n/* harmony import */ var _task_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./task.js */ \"./src/modules/task.js\");\n\n\n\n\nconst taskContainer = document.querySelector('.todo-list');\n\nconst addNewTask = (text) => {\n  const arr = _storage_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"].getTaskArray();\n  const task = new _task_js__WEBPACK_IMPORTED_MODULE_1__[\"default\"](arr.length + 1, text);\n  arr.push(task);\n  _storage_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"].setTaskArray(arr);\n  taskContainer.insertBefore(createTaskTile(task), taskContainer.lastElementChild);\n}\n\nconst loadTaskList = () => {\n\n  const taskElements = document.querySelectorAll('.todo-list-task');\n    for (let i = 0; i < taskElements.length; i += 1) {\n      taskContainer.removeChild(taskElements[i]);\n    }\n\n  _storage_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"].getTaskArray().forEach(task => {\n    taskContainer.insertBefore(createTaskTile(task), taskContainer.lastElementChild);\n  });\n}\n\nconst updateTaskDetails = (index, newText) => {\n  const arr = _storage_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"].getTaskArray();\n  arr[index].details = newText;\n  _storage_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"].setTaskArray(arr);\n}\n\nconst deleteSelectedTask = (taskElement) => {\n  const taskId = parseInt(taskElement.id,10);\n  const arr = _storage_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"].getTaskArray();\n  _storage_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"].setTaskArray(arr.filter(task=>{return task.id!==taskId}));\n  updateTaskIDs();\n  loadTaskList();\n}\n\nconst updateTaskIDs = () => {\n  const arr = _storage_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"].getTaskArray();\n  for(let i=0;i<arr.length;i+=1){\n    arr[i].id = i+1;\n  }\n  _storage_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"].setTaskArray(arr);\n}\n\nconst createTaskTile = (task) => {\n  const listItem = document.createElement('li');\n  listItem.classList.add('todo-list-item', 'todo-list-task');\n  listItem.id = task.id;\n  listItem.draggable = 'true';\n\n  const checkBox = document.createElement('input');\n  checkBox.type = 'checkbox';\n  checkBox.classList.add('task-status-checkbox');\n\n  const taskDetail = document.createElement('input');\n  taskDetail.type = 'text';\n  taskDetail.classList.add('task-details');\n  taskDetail.value = task.details;\n  taskDetail.setAttribute('readonly', true);\n\n  const buttonDelete = document.createElement('span');\n  buttonDelete.classList.add('material-icons', 'button-delete');\n  buttonDelete.textContent = 'delete';\n  buttonDelete.style.display = 'none';\n\n  const iconSpan = document.createElement('span');\n  iconSpan.classList.add('material-icons', 'button-more');\n  iconSpan.textContent = 'more_vert';\n\n  listItem.appendChild(checkBox);\n  listItem.appendChild(taskDetail);\n  listItem.appendChild(buttonDelete);\n  listItem.appendChild(iconSpan);\n  return listItem;\n}\n\n//# sourceURL=webpack://todolist-application-v2/./src/modules/taskCRUD.js?");
+
+/***/ }),
+
+/***/ "./src/modules/taskInterface.js":
+/*!**************************************!*\
+  !*** ./src/modules/taskInterface.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"initListeners\": () => (/* binding */ initListeners)\n/* harmony export */ });\n/* harmony import */ var _taskCRUD_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./taskCRUD.js */ \"./src/modules/taskCRUD.js\");\n\n\nconst taskContainer = document.querySelector('.todo-list');\nconst taskInputField = document.querySelector('#todolist-input');\nconst enterButton = document.querySelector('#enter-button');\n\nlet editTaskElement = null;\n\nconst initListeners = () => {\n  (0,_taskCRUD_js__WEBPACK_IMPORTED_MODULE_0__.loadTaskList)();\n  taskInputField.onkeyup = (event) => {\n    if (event.key == 'Enter' && taskInputField.value !== '') {\n      (0,_taskCRUD_js__WEBPACK_IMPORTED_MODULE_0__.addNewTask)(taskInputField.value);\n      taskInputField.value = '';\n    }\n  };\n  enterButton.onclick = () => {\n    if (taskInputField.value !== '') {\n      (0,_taskCRUD_js__WEBPACK_IMPORTED_MODULE_0__.addNewTask)(taskInputField.value);\n      taskInputField.value = '';\n    }\n  }\n\n  taskContainer.addEventListener('long-press', (event) => {\n    if (event.target.classList.contains('button-more')) {\n      editTaskElement = event.target.parentNode;\n      createEditWindow(editTaskElement);\n      editTaskElement.onkeyup = (event) => {\n        if (event.key === 'Enter') {\n          const inputField = editTaskElement.querySelector('.task-details');\n          (0,_taskCRUD_js__WEBPACK_IMPORTED_MODULE_0__.updateTaskDetails)(parseInt(editTaskElement.id, 10) - 1, inputField.value);\n          resetEditWindow(editTaskElement);\n        }\n      };\n      const deleteBtn = editTaskElement.querySelector('.button-delete');\n      deleteBtn.onclick = (event) => {\n          (0,_taskCRUD_js__WEBPACK_IMPORTED_MODULE_0__.deleteSelectedTask)(editTaskElement);\n      }\n    }\n  });\n\n  document.body.onkeyup = (event) => {\n    if (event.key == 'Escape' && editTaskElement !== null) {\n      resetEditWindow(editTaskElement);\n    }\n  };\n\n}\n\nconst createEditWindow = (taskElement) => {\n  taskElement.style.background = '#e6ffe6';\n  taskElement.lastElementChild.style.display = 'none';\n  const taskElementInput = taskElement.querySelector('.task-details');\n  taskElementInput.removeAttribute('readonly');\n  taskElementInput.focus();\n  taskElementInput.style.background = '#e6ffe6';\n  const listItemDelButton = taskElement.querySelector('.button-delete');\n  listItemDelButton.style.display = 'inline';\n}\n\nconst resetEditWindow = (taskElement) => {\n  taskElement.style.background = '#fff';\n  taskElement.lastElementChild.style.display = 'inline';\n  const taskElementInput = taskElement.querySelector('.task-details');\n  taskElementInput.setAttribute('readonly', true);\n  taskElementInput.style.background = '#fff';\n  const listItemDelButton = taskElement.querySelector('.button-delete');\n  listItemDelButton.style.display = 'none';\n}\n\n\n\n//# sourceURL=webpack://todolist-application-v2/./src/modules/taskInterface.js?");
 
 /***/ })
 
