@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <title>Todo List</title>
+</head>
+<body>
+  <section class="list-holder">
+    <ul class="todo-list" data-long-press-delay="1000">
+      <li class="todo-list-item">
+        <p id="todolist-header">Today's To Do</p><span class="material-icons">refresh</span>
+      </li>
+      <li class="todo-list-item"><input id="todolist-input" placeholder="Add to your list.." type="text"><span
+          class="material-icons" id="enter-button">subdirectory_arrow_left</span></li>
+      <li class="button-clear"><div id="button-clear">Clear all completed</div></li>
+    </ul>
+  </section>
+  <section class="help-menu">
+    <h3>How To:</h3>
+    <ul>
+      <li class="help-menu-item">To add a task, type task detail and press Enter</li>
+      <li class="help-menu-item">To Edit/Delete a task,long press the task to access task editor(green)</li>
+      <li class="help-menu-item">To save edited task, press Enter in task editor</li>
+      <li class="help-menu-item">To exit task editor, press Escape or click outside task editor</li>
+      <li class="help-menu-item">Drag and drop task to reorder(experimental)</li>
+    </ul>
+  </section>
+
+</body>
+</html>
