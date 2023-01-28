@@ -22,8 +22,12 @@ const resetEditWindow = (taskElement) => {
 };
 
 const addBodyClickListener = (event) => {
-  if (event.target.id !== editTaskElement.id) {
-    resetEditWindow(editTaskElement);
+  const editField = editTaskElement.querySelector('.task-details');
+
+  if (event.target !== editTaskElement) {
+    if (event.target !== editField) {
+      resetEditWindow(editTaskElement);
+    }
   }
 };
 
@@ -36,7 +40,7 @@ const createEditWindow = (taskElement) => {
   taskElementInput.style.background = '#e6ffe6';
   const listItemDelButton = taskElement.querySelector('.button-delete');
   listItemDelButton.style.display = 'inline';
-  document.body.addEventListener('click', addBodyClickListener, true);
+  document.body.addEventListener('click', addBodyClickListener);
 };
 
 const initListeners = () => {

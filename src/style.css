@@ -42,9 +42,11 @@ body {
 
 .task-details {
   width: 90%;
-  padding: 5% 5%;
+  margin: 5% 0;
+  padding: 0 5%;
   text-align: left;
   height: 100%;
+  font-size: 1em;
 }
 
 .button-clear {
